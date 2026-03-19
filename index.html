@@ -2,10 +2,10 @@
 <html lang="de">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="theme-color" content="#f3f4f7">
-    <title>Calc Pro</title>
+    <title>Pro Calc</title>
 	<link rel="icon" type="image/png" href="calculator.png">
 	<link rel="apple-touch-icon" href="calculator.png">
     <link rel="manifest" href="manifest.json">
@@ -29,58 +29,71 @@
             font-family: -apple-system, system-ui, sans-serif;
             display: flex;
             flex-direction: column;
-            height: 100vh; /* Fest auf die volle Viewport-Höhe */
+            height: 100vh;
             width: 100vw;
             overflow: hidden;
         }
 
-        /* Bereich für Verlauf & Ergebnis */
+        /* HEADER Bereich für Verlauf & Symbole */
+        header {
+            display: flex;
+            justify-content: space-between;
+            padding: 15px 20px 0 20px;
+            z-index: 10;
+        }
+
+        .icon-btn {
+            background: none; border: none; font-size: 1.5rem; color: #8e8e93; cursor: pointer; padding: 5px;
+        }
+
+        /* Display Bereich - Höher gesetzt */
         .display-container {
-            flex: 1; /* Nimmt den restlichen Platz ein */
+            flex: 1; 
             display: flex;
             flex-direction: column;
             justify-content: flex-end;
-            padding: 20px;
-            min-height: 200px;
+            padding: 10px 25px 30px 25px; /* Mehr Abstand nach unten zum Keypad */
         }
 
         .mini-history {
             display: flex;
             flex-direction: column;
-            gap: 4px;
-            margin-bottom: 10px;
-            max-height: 120px;
-            overflow-y: auto;
+            gap: 2px;
+            margin-bottom: 8px;
+            max-height: 100px;
+            overflow: hidden;
         }
 
         .hist-line {
             text-align: right;
             color: #8e8e93;
-            font-size: 1rem;
-            cursor: pointer;
+            font-size: 0.95rem;
+            opacity: 0.8;
             white-space: nowrap;
         }
 
         #main-display {
             text-align: right;
-            font-size: clamp(2rem, 10vw, 4rem); /* Text wird kleiner bei viel Inhalt */
+            font-size: clamp(2.5rem, 12vw, 4.5rem);
             font-weight: 300;
             word-wrap: break-word;
             overflow-x: auto;
             max-width: 100%;
+            /* Keine blaue Linie/Cursor mehr */
+            border-right: none; 
         }
 
-        /* Das Tastenfeld - optimiert für Mobile */
+        /* Keypad - Ein Stück höher (70% Höhe statt 65%) */
         .keypad {
             background: var(--card-bg);
-            border-radius: 32px 32px 0 0;
-            padding: 15px 10px env(safe-area-inset-bottom); /* Berücksichtigt Notch unten */
+            border-radius: 35px 35px 0 0;
+            padding: 20px 12px calc(15px + env(safe-area-inset-bottom));
             display: grid;
             grid-template-columns: repeat(6, 1fr);
             grid-template-rows: repeat(8, 1fr);
-            gap: 8px;
-            height: 65%; /* Nimmt ca. 2/3 des Bildschirms ein */
-            box-shadow: 0 -10px 30px rgba(0,0,0,0.05);
+            gap: 10px;
+            height: 72%; 
+            box-shadow: 0 -15px 40px rgba(0,0,0,0.08);
         }
 
         button {
@@ -88,54 +101,46 @@
             border-radius: 50%;
             background: var(--btn-sci);
             color: var(--text);
-            font-size: clamp(0.8rem, 4vw, 1.1rem);
+            font-size: clamp(0.85rem, 4.5vw, 1.2rem);
             font-weight: 500;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            transition: background 0.1s, transform 0.05s;
+            transition: background 0.1s;
         }
 
-        button:active {
-            background: #d1d1d6;
-            transform: scale(0.92);
-        }
+        button:active { background: #dce0e5; transform: scale(0.95); }
 
-        /* Spezielle Button-Farben */
-        .btn-num { background: var(--btn-num); font-size: 1.4rem; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        .btn-num { background: var(--btn-num); font-size: 1.5rem; box-shadow: 0 2px 8px rgba(0,0,0,0.04); }
         .btn-op { background: var(--btn-op); }
         .btn-equal { 
             background: var(--accent); 
             color: white; 
             border-radius: 40px; 
-            grid-column: span 3; /* Wie im Screenshot */
-            font-size: 1.5rem;
+            grid-column: span 3; 
+            font-size: 1.8rem;
         }
         
         .wide { grid-column: span 3; border-radius: 40px; }
 
-        /* PWA Hinweis */
-        #pwa-modal {
+        /* Verlauf-Modal */
+        #history-modal {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.85); display: none; z-index: 9999;
-            justify-content: center; align-items: center; padding: 20px;
+            background: var(--bg); display: none; z-index: 2000;
+            flex-direction: column; padding: 20px;
         }
-        .modal-content { background: white; padding: 25px; border-radius: 20px; text-align: center; color: black; max-width: 300px; }
     </style>
 </head>
 <body>
 
-    <div id="pwa-modal">
-        <div class="modal-content">
-            <h3 style="margin-top:0">App installieren</h3>
-            <p id="pwa-desc"></p>
-            <button onclick="closePWA()" style="background:var(--accent); color:white; width:100%; height:45px; border-radius:10px;">OK</button>
-        </div>
-    </div>
+    <header>
+        <button class="icon-btn" onclick="toggleFullHistory()">🕒</button>
+        <button class="icon-btn" style="font-size: 1.2rem;">⌨️</button>
+    </header>
 
     <div class="display-container">
-        <div class="mini-history" id="history-box"></div>
+        <div class="mini-history" id="mini-history"></div>
         <div id="main-display">0</div>
     </div>
 
@@ -194,12 +199,20 @@
         <button class="btn-equal" onclick="calculate()">=</button>
     </div>
 
+    <div id="history-modal">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+            <h2 style="margin:0">Verlauf</h2>
+            <button onclick="toggleFullHistory()" style="font-size:1.5rem; background:none; border:none;">✕</button>
+        </div>
+        <div id="full-history-list" style="overflow-y:auto; flex:1;"></div>
+        <button onclick="clearHistory()" style="background:#ef4444; color:white; border:none; padding:15px; border-radius:10px; margin-top:10px;">Verlauf löschen</button>
+    </div>
+
     <script>
         const display = document.getElementById('main-display');
-        const histBox = document.getElementById('history-box');
+        const miniHist = document.getElementById('mini-history');
+        let history = JSON.parse(localStorage.getItem('calc_v6_honor')) || [];
         let isRes = false;
-        let memory = 0;
-        let history = JSON.parse(localStorage.getItem('honor_calc_v5')) || [];
 
         function append(v) {
             if (isRes && !isNaN(v)) { display.innerText = '0'; isRes = false; }
@@ -221,42 +234,32 @@
 
         function saveH(e, r) {
             history.unshift({e, r});
-            localStorage.setItem('honor_calc_v5', JSON.stringify(history.slice(0, 20)));
-            renderH();
+            localStorage.setItem('calc_v6_honor', JSON.stringify(history.slice(0, 50)));
+            updateUI();
         }
 
-        function renderH() {
-            histBox.innerHTML = history.slice(0, 6).reverse().map(h => 
-                `<div class="hist-line" onclick="loadH('${h.r}')">${h.e} = ${h.r}</div>`
-            ).join('');
+        function updateUI() {
+            miniHist.innerHTML = history.slice(0, 3).reverse().map(h => `<div class="hist-line">${h.e} = ${h.r}</div>`).join('');
         }
 
-        function loadH(v) { display.innerText = v; isRes = true; }
+        function toggleFullHistory() {
+            const modal = document.getElementById('history-modal');
+            const list = document.getElementById('full-history-list');
+            const isOpen = modal.style.display === 'flex';
+            modal.style.display = isOpen ? 'none' : 'flex';
+            if (!isOpen) {
+                list.innerHTML = history.map(h => `<div style="padding:15px; border-bottom:1px solid #ddd; text-align:right" onclick="useHist('${h.r}')"><small>${h.e}</small><br><strong>= ${h.r}</strong></div>`).join('');
+            }
+        }
+
+        function useHist(v) { display.innerText = v; toggleFullHistory(); isRes = true; }
+        function clearHistory() { history = []; localStorage.removeItem('calc_v6_honor'); updateUI(); toggleFullHistory(); }
         function clearAll() { display.innerText = '0'; isRes = false; }
         function backspace() { display.innerText = display.innerText.slice(0, -1) || '0'; }
         function plusMinus() { display.innerText = (parseFloat(display.innerText) * -1).toString(); }
-        function mem(t) {
-            let v = parseFloat(display.innerText);
-            if(t==='M+') memory += v; if(t==='M-') memory -= v;
-            if(t==='MC') memory = 0; if(t==='MR') { display.innerText = memory; isRes = true; }
-        }
-        function fact() {
-            let n = parseInt(display.innerText);
-            let r = 1; for(let i=2; i<=n; i++) r *= i;
-            display.innerText = r; isRes = true;
-        }
+        function fact() { let n = parseInt(display.innerText); let r = 1; for(let i=2; i<=n; i++) r *= i; display.innerText = r; isRes = true; }
 
-        // PWA Setup
-        if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js');
-        window.onload = () => {
-            renderH();
-            if(!localStorage.getItem('pwa_v5') && !window.navigator.standalone) {
-                document.getElementById('pwa-modal').style.display = 'flex';
-                document.getElementById('pwa-desc').innerText = /iPhone|iPad/.test(navigator.userAgent) ? 
-                    'Klicke auf "Teilen" und dann "Zum Home-Bildschirm".' : 'Klicke auf die 3 Punkte und "App installieren".';
-            }
-        };
-        function closePWA() { localStorage.setItem('pwa_v5', '1'); document.getElementById('pwa-modal').style.display='none'; }
+        window.onload = updateUI;
     </script>
 </body>
 </html>
