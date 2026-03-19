@@ -1,22 +1,24 @@
-const CACHE_NAME = 'pro-calc-v1';
-const ASSETS = [
+const CACHE_NAME = 'honor-calc-v8';
+const assets = [
   './',
   './index.html',
   './manifest.json'
 ];
 
-// Installation: Dateien in den Cache laden
-self.addEventListener('install', (e) => {
-  e.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => cache.addAll(ASSETS))
+// Installieren und Dateien in den Cache laden
+self.addEventListener('install', (event) => {
+  event.waitUntil(
+    caches.open(CACHE_NAME).then((cache) => {
+      return cache.addAll(assets);
+    })
   );
 });
 
-// Strategie: Erst im Cache suchen, dann Netzwerk (Offline-First)
-self.addEventListener('fetch', (e) => {
-  e.respondWith(
-    caches.match(e.request).then((response) => {
-      return response || fetch(e.request);
+// Dateien aus dem Cache servieren (macht die App offline-fähig)
+self.addEventListener('fetch', (event) => {
+  event.respondWith(
+    caches.match(event.request).then((response) => {
+      return response || fetch(event.request);
     })
   );
 });
