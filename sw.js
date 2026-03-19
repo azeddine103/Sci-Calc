@@ -1,4 +1,4 @@
-const CACHE_NAME = 'honor-calc-v8';
+const CACHE_NAME = 'sci-calc';
 const assets = [
   './',
   './index.html',
