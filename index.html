@@ -5,10 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="theme-color" content="#f3f4f7">
-    <title>Pro Calc</title>
 	<link rel="icon" type="image/png" href="calculator.png">
 	<link rel="apple-touch-icon" href="calculator.png">
-    <link rel="manifest" href="manifest.json">
+    <title>Honor Pro Calc v8</title>
     <style>
         :root {
             --bg: #f3f4f7;
@@ -18,9 +17,28 @@
             --btn-sci: #f1f3f6;
             --btn-op: #e5e7eb;
             --accent: #ff7e32;
+            --hist-text: #8e8e93;
         }
 
-        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        /* Automatischer Dark Mode Support */
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg: #000000;
+                --card-bg: #1c1c1e;
+                --text: #ffffff;
+                --btn-num: #2c2c2e;
+                --btn-sci: #1c1c1e;
+                --btn-op: #3a3a3c;
+                --hist-text: #8e8e93;
+            }
+        }
+
+        * { 
+            box-sizing: border-box; 
+            -webkit-tap-highlight-color: transparent; 
+            outline: none !important; 
+            -webkit-touch-callout: none;
+        }
 
         body {
             margin: 0; padding: 0;
@@ -32,68 +50,63 @@
             height: 100vh;
             width: 100vw;
             overflow: hidden;
+            user-select: none;
         }
 
-        /* HEADER Bereich für Verlauf & Symbole */
         header {
             display: flex;
-            justify-content: space-between;
-            padding: 15px 20px 0 20px;
-            z-index: 10;
+            justify-content: flex-start; /* Nur noch linksbündig für Verlauf */
+            padding: 20px 25px 0 25px;
         }
 
         .icon-btn {
-            background: none; border: none; font-size: 1.5rem; color: #8e8e93; cursor: pointer; padding: 5px;
+            background: none; border: none; font-size: 1.6rem; color: var(--hist-text); cursor: pointer;
         }
 
-        /* Display Bereich - Höher gesetzt */
         .display-container {
             flex: 1; 
             display: flex;
             flex-direction: column;
             justify-content: flex-end;
-            padding: 10px 25px 30px 25px; /* Mehr Abstand nach unten zum Keypad */
+            padding: 10px 30px 40px 30px;
         }
 
         .mini-history {
             display: flex;
             flex-direction: column;
-            gap: 2px;
-            margin-bottom: 8px;
-            max-height: 100px;
-            overflow: hidden;
+            gap: 4px;
+            margin-bottom: 10px;
+            min-height: 50px;
         }
 
         .hist-line {
             text-align: right;
-            color: #8e8e93;
-            font-size: 0.95rem;
-            opacity: 0.8;
-            white-space: nowrap;
+            color: var(--hist-text);
+            font-size: 1.1rem;
+            opacity: 0.7;
         }
 
         #main-display {
             text-align: right;
-            font-size: clamp(2.5rem, 12vw, 4.5rem);
+            font-size: clamp(3rem, 15vw, 5rem);
             font-weight: 300;
-            word-wrap: break-word;
             overflow-x: auto;
-            max-width: 100%;
-            /* Keine blaue Linie/Cursor mehr */
-            border-right: none; 
+            white-space: nowrap;
+            border: none;
+            background: transparent;
         }
 
-        /* Keypad - Ein Stück höher (70% Höhe statt 65%) */
+        /* Keypad Layout */
         .keypad {
             background: var(--card-bg);
-            border-radius: 35px 35px 0 0;
-            padding: 20px 12px calc(15px + env(safe-area-inset-bottom));
+            border-radius: 40px 40px 0 0;
+            padding: 25px 15px calc(20px + env(safe-area-inset-bottom));
             display: grid;
             grid-template-columns: repeat(6, 1fr);
             grid-template-rows: repeat(8, 1fr);
-            gap: 10px;
-            height: 72%; 
-            box-shadow: 0 -15px 40px rgba(0,0,0,0.08);
+            gap: 12px;
+            height: 75%; 
+            box-shadow: 0 -20px 45px rgba(0,0,0,0.1);
         }
 
         button {
@@ -101,34 +114,33 @@
             border-radius: 50%;
             background: var(--btn-sci);
             color: var(--text);
-            font-size: clamp(0.85rem, 4.5vw, 1.2rem);
+            font-size: clamp(0.9rem, 5vw, 1.3rem);
             font-weight: 500;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            transition: background 0.1s;
         }
 
-        button:active { background: #dce0e5; transform: scale(0.95); }
+        button:active { filter: brightness(0.8); transform: scale(0.95); }
 
-        .btn-num { background: var(--btn-num); font-size: 1.5rem; box-shadow: 0 2px 8px rgba(0,0,0,0.04); }
-        .btn-op { background: var(--btn-op); }
+        .btn-num { background: var(--btn-num); font-size: 1.7rem; }
+        .btn-op { background: var(--btn-op); font-size: 1.5rem; }
         .btn-equal { 
             background: var(--accent); 
             color: white; 
-            border-radius: 40px; 
+            border-radius: 45px; 
             grid-column: span 3; 
-            font-size: 1.8rem;
+            font-size: 2rem;
         }
         
-        .wide { grid-column: span 3; border-radius: 40px; }
+        .wide { grid-column: span 3; border-radius: 45px; }
 
-        /* Verlauf-Modal */
+        /* Verlauf Modal */
         #history-modal {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: var(--bg); display: none; z-index: 2000;
-            flex-direction: column; padding: 20px;
+            flex-direction: column; padding: 25px;
         }
     </style>
 </head>
@@ -136,8 +148,7 @@
 
     <header>
         <button class="icon-btn" onclick="toggleFullHistory()">🕒</button>
-        <button class="icon-btn" style="font-size: 1.2rem;">⌨️</button>
-    </header>
+        </header>
 
     <div class="display-container">
         <div class="mini-history" id="mini-history"></div>
@@ -163,8 +174,8 @@
         <button onclick="append('Math.sqrt(')">√</button>
         <button onclick="append('Math.cbrt(')">∛x</button>
         <button onclick="yroot()">ʸ√x</button>
-        <button onclick="alert('Inverser Modus aktiv')">Inv</button>
-        <button onclick="toggleRad()">Rad</button>
+        <button onclick="alert('Inv Modus')">Inv</button>
+        <button onclick="alert('Rad Modus')">Rad</button>
 
         <button onclick="append('Math.E')">e</button>
         <button onclick="append('Math.log(')">ln</button>
@@ -202,17 +213,18 @@
     <div id="history-modal">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
             <h2 style="margin:0">Verlauf</h2>
-            <button onclick="toggleFullHistory()" style="font-size:1.5rem; background:none; border:none;">✕</button>
+            <button onclick="toggleFullHistory()" style="font-size:2rem; background:none; border:none; color:var(--text)">✕</button>
         </div>
         <div id="full-history-list" style="overflow-y:auto; flex:1;"></div>
-        <button onclick="clearHistory()" style="background:#ef4444; color:white; border:none; padding:15px; border-radius:10px; margin-top:10px;">Verlauf löschen</button>
+        <button onclick="clearHistory()" style="background:#ef4444; color:white; border:none; padding:18px; border-radius:15px; margin-top:10px; font-weight:bold;">Verlauf löschen</button>
     </div>
 
     <script>
         const display = document.getElementById('main-display');
         const miniHist = document.getElementById('mini-history');
-        let history = JSON.parse(localStorage.getItem('calc_v6_honor')) || [];
+        let history = JSON.parse(localStorage.getItem('calc_v8_honor')) || [];
         let isRes = false;
+        let memory = 0;
 
         function append(v) {
             if (isRes && !isNaN(v)) { display.innerText = '0'; isRes = false; }
@@ -234,12 +246,12 @@
 
         function saveH(e, r) {
             history.unshift({e, r});
-            localStorage.setItem('calc_v6_honor', JSON.stringify(history.slice(0, 50)));
+            localStorage.setItem('calc_v8_honor', JSON.stringify(history.slice(0, 50)));
             updateUI();
         }
 
         function updateUI() {
-            miniHist.innerHTML = history.slice(0, 3).reverse().map(h => `<div class="hist-line">${h.e} = ${h.r}</div>`).join('');
+            miniHist.innerHTML = history.slice(0, 2).reverse().map(h => `<div class="hist-line">${h.e} = ${h.r}</div>`).join('');
         }
 
         function toggleFullHistory() {
@@ -248,16 +260,21 @@
             const isOpen = modal.style.display === 'flex';
             modal.style.display = isOpen ? 'none' : 'flex';
             if (!isOpen) {
-                list.innerHTML = history.map(h => `<div style="padding:15px; border-bottom:1px solid #ddd; text-align:right" onclick="useHist('${h.r}')"><small>${h.e}</small><br><strong>= ${h.r}</strong></div>`).join('');
+                list.innerHTML = history.map(h => `<div style="padding:20px; border-bottom:1px solid #8884; text-align:right" onclick="useHist('${h.r}')"><small style="color:var(--hist-text)">${h.e}</small><br><strong style="font-size:1.4rem">= ${h.r}</strong></div>`).join('');
             }
         }
 
         function useHist(v) { display.innerText = v; toggleFullHistory(); isRes = true; }
-        function clearHistory() { history = []; localStorage.removeItem('calc_v6_honor'); updateUI(); toggleFullHistory(); }
+        function clearHistory() { if(confirm("Verlauf löschen?")) { history = []; localStorage.removeItem('calc_v8_honor'); updateUI(); toggleFullHistory(); } }
         function clearAll() { display.innerText = '0'; isRes = false; }
-        function backspace() { display.innerText = display.innerText.slice(0, -1) || '0'; }
+        function backspace() { display.innerText = display.innerText.length > 1 ? display.innerText.slice(0, -1) : '0'; }
         function plusMinus() { display.innerText = (parseFloat(display.innerText) * -1).toString(); }
         function fact() { let n = parseInt(display.innerText); let r = 1; for(let i=2; i<=n; i++) r *= i; display.innerText = r; isRes = true; }
+        function mem(t) {
+            let v = parseFloat(display.innerText);
+            if(t==='M+') memory += v; if(t==='M-') memory -= v;
+            if(t==='MC') memory = 0; if(t==='MR') { display.innerText = memory; isRes = true; }
+        }
 
         window.onload = updateUI;
     </script>
