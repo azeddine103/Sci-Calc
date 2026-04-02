@@ -3,13 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>Multi-Modus Taschenrechner | Offline</title>
+    <meta name="theme-color" content="#1e2a3a">
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="icons/icon-192.png">
+    <title>Multi-Taschenrechner</title>
     <style>
+        /* Hier den gesamten CSS-Code aus der vorherigen Antwort einfügen */
         * {
             box-sizing: border-box;
             user-select: none;
         }
-
         body {
             background: linear-gradient(145deg, #1e2a3a 0%, #0f1724 100%);
             min-height: 100vh;
@@ -20,7 +23,6 @@
             margin: 0;
             padding: 20px;
         }
-
         .calculator {
             max-width: 650px;
             width: 100%;
@@ -31,7 +33,6 @@
             box-shadow: 0 25px 45px rgba(0, 0, 0, 0.5), inset 0 1px 2px rgba(255, 255, 255, 0.1);
             border: 1px solid rgba(255, 255, 255, 0.2);
         }
-
         .display {
             background: #0a0f1a;
             border-radius: 32px;
@@ -41,7 +42,6 @@
             border: 1px solid #2d3e4e;
             min-height: 130px;
         }
-
         #expression {
             font-size: 1.2rem;
             color: #8aaec0;
@@ -51,7 +51,6 @@
             text-align: right;
             letter-spacing: 0.5px;
         }
-
         #result {
             font-size: 3rem;
             font-weight: 700;
@@ -64,7 +63,6 @@
             text-shadow: 0 2px 3px black;
             min-height: 70px;
         }
-
         .mode-tabs {
             display: flex;
             gap: 12px;
@@ -73,7 +71,6 @@
             padding: 8px;
             border-radius: 60px;
         }
-
         .mode-btn {
             flex: 1;
             background: transparent;
@@ -88,14 +85,12 @@
             font-family: inherit;
             letter-spacing: 0.5px;
         }
-
         .mode-btn.active {
             background: #2c5a7a;
             color: white;
             box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
             text-shadow: 0 1px 0 #1a3f57;
         }
-
         .history-header {
             display: flex;
             justify-content: space-between;
@@ -103,7 +98,6 @@
             margin-bottom: 12px;
             margin-top: 16px;
         }
-
         .history-btn {
             background: #2c5a7a;
             border: none;
@@ -116,12 +110,10 @@
             font-size: 0.9rem;
             transition: all 0.2s;
         }
-
         .history-btn:hover {
             background: #3e7a9e;
             transform: scale(1.02);
         }
-
         .history-panel {
             background: #0a0f1a;
             border-radius: 24px;
@@ -132,11 +124,9 @@
             display: none;
             border: 1px solid #2d3e4e;
         }
-
         .history-panel.show {
             display: block;
         }
-
         .history-item {
             background: #1a2533;
             margin: 8px 0;
@@ -149,26 +139,22 @@
             transition: all 0.1s;
             font-family: monospace;
         }
-
         .history-item:hover {
             background: #2c4053;
             transform: translateX(4px);
         }
-
         .history-expr {
             color: #8aaec0;
             font-size: 0.9rem;
             word-break: break-word;
             flex: 1;
         }
-
         .history-val {
             color: #e68a2e;
             font-weight: bold;
             margin-left: 15px;
             font-size: 1rem;
         }
-
         .clear-history {
             background: #a03e3e;
             border: none;
@@ -179,13 +165,11 @@
             font-size: 0.8rem;
             margin-bottom: 8px;
         }
-
         .buttons {
             display: grid;
             grid-template-columns: repeat(5, 1fr);
             gap: 10px;
         }
-
         button {
             background: #1e2f3c;
             border: none;
@@ -200,51 +184,42 @@
             cursor: pointer;
             text-align: center;
         }
-
         button:active {
             transform: translateY(2px);
             box-shadow: 0 2px 0 #0a1117;
         }
-
         .btn-op {
             background: #2c4c6c;
             color: white;
             font-size: 1.4rem;
         }
-
         .btn-equal {
             background: #e68a2e;
             box-shadow: 0 5px 0 #9b4e1a;
             color: white;
             font-size: 1.6rem;
         }
-
         .btn-clear {
             background: #a03e3e;
             box-shadow: 0 5px 0 #5e2626;
         }
-
         .btn-func {
             background: #2d5f6e;
             font-size: 1rem;
             font-weight: 500;
         }
-
         .btn-mem {
             background: #3a4a5e;
         }
-
         .btn-bit {
             background: #4a3e5e;
             font-family: monospace;
             font-weight: bold;
         }
-
         .scientific-grid button, .programmer-grid button {
             font-size: 1rem;
             padding: 12px 0;
         }
-
         .programmer-panel {
             background: #0d1722;
             border-radius: 28px;
@@ -256,7 +231,6 @@
             gap: 10px;
             font-family: monospace;
         }
-
         .bit-indicator {
             color: #b7e1f0;
             font-size: 0.85rem;
@@ -266,7 +240,6 @@
             font-family: monospace;
             word-break: break-all;
         }
-
         @media (max-width: 550px) {
             .buttons {
                 gap: 8px;
@@ -294,79 +267,60 @@
         <div id="expression">0</div>
         <div id="result">0</div>
     </div>
-
     <div class="mode-tabs">
         <button class="mode-btn active" data-mode="standard">📟 Standard</button>
         <button class="mode-btn" data-mode="scientific">🔬 Wissenschaft</button>
         <button class="mode-btn" data-mode="programmer">💻 Programmierer</button>
     </div>
-
     <div class="history-header">
         <button id="historyToggleBtn" class="history-btn">📜 Verlauf anzeigen</button>
     </div>
-
     <div id="historyPanel" class="history-panel">
         <button id="clearHistoryBtn" class="clear-history">🗑 Verlauf löschen</button>
         <div id="historyList"></div>
     </div>
-
     <div id="buttonPanel" class="buttons"></div>
     <div id="programmerInfo" style="margin-top: 16px; min-height: 70px;"></div>
 </div>
-
 <script>
-    // ---------- Globale Zustände ----------
+    // Hier den gesamten JavaScript-Code aus der vorherigen Antwort einfügen
     let currentMode = "standard";
     let currentInput = "0";
     let memoryValue = 0;
     let history = [];
     let justCalculated = false;
 
-    // Hilfsfunktionen
     function updateDisplay() {
         const exprDiv = document.getElementById('expression');
         const resultDiv = document.getElementById('result');
-        
-        if (!currentInput || currentInput === "") {
-            currentInput = "0";
-        }
+        if (!currentInput || currentInput === "") currentInput = "0";
         exprDiv.innerText = currentInput;
-        
         let evalResult = tryEvaluate(currentInput);
         if (evalResult !== null && !isNaN(evalResult) && isFinite(evalResult)) {
-            let formatted = formatResult(evalResult);
-            resultDiv.innerText = formatted;
+            resultDiv.innerText = formatResult(evalResult);
         } else {
             resultDiv.innerText = "";
         }
-        
         if (currentMode === "programmer") {
             let num = tryEvaluate(currentInput);
             if (num !== null && !isNaN(num) && isFinite(num)) {
                 updateProgrammerInfo(num);
             } else {
-                const infoDiv = document.getElementById('programmerInfo');
-                if (infoDiv) infoDiv.innerHTML = `<div class="programmer-panel"><span class="bit-indicator">⚙️ Gib eine Zahl ein für HEX/BIN</span></div>`;
+                document.getElementById('programmerInfo').innerHTML = `<div class="programmer-panel"><span class="bit-indicator">⚙️ Gib eine Zahl ein für HEX/BIN</span></div>`;
             }
         } else {
-            const infoDiv = document.getElementById('programmerInfo');
-            if (infoDiv) infoDiv.innerHTML = "";
+            document.getElementById('programmerInfo').innerHTML = "";
         }
     }
     
     function tryEvaluate(expr) {
         if (!expr || expr.trim() === "" || expr === "Fehler") return null;
-        
         let trimmed = expr.trim();
         let lastChar = trimmed.slice(-1);
-        if (["+", "-", "*", "/", "%", "^", "&", "|", "(", ")", "~", "<<"].includes(lastChar)) {
-            return null;
-        }
-        
+        if (["+", "-", "*", "/", "%", "^", "&", "|", "(", ")", "~", "<<"].includes(lastChar)) return null;
         let openParens = (expr.match(/\(/g) || []).length;
         let closeParens = (expr.match(/\)/g) || []).length;
         if (openParens !== closeParens) return null;
-        
         try {
             let clean = expr.replace(/,/g, '.');
             clean = clean.replace(/\^/g, '**');
@@ -381,31 +335,24 @@
             clean = clean.replace(/sqrt\(/g, 'Math.sqrt(');
             clean = clean.replace(/ln\(/g, 'Math.log(');
             clean = clean.replace(/log\(/g, 'Math.log10(');
-            
             if (currentMode === "programmer") {
                 clean = clean.replace(/\b([0-9A-Fa-f]+)\b/g, (match) => {
-                    if (/^[0-9A-Fa-f]+$/.test(match) && !isNaN(parseInt(match, 16))) {
-                        return parseInt(match, 16);
-                    }
+                    if (/^[0-9A-Fa-f]+$/.test(match) && !isNaN(parseInt(match, 16))) return parseInt(match, 16);
                     return match;
                 });
             }
-            
             const fn = new Function('return (' + clean + ')');
             let val = fn();
             if (isNaN(val) || !isFinite(val)) return null;
             return val;
-        } catch(e) {
-            return null;
-        }
+        } catch(e) { return null; }
     }
     
     function formatResult(num) {
         if (isNaN(num) || !isFinite(num)) return "0";
         if (Math.abs(num) > 1e12) return num.toExponential(6);
         if (Number.isInteger(num)) return num.toString();
-        let rounded = Math.round(num * 1e10) / 1e10;
-        return rounded.toString();
+        return (Math.round(num * 1e10) / 1e10).toString();
     }
     
     function updateProgrammerInfo(value) {
@@ -418,26 +365,18 @@
         let intVal = Math.floor(Math.abs(value)) * (value < 0 ? -1 : 1);
         if (intVal > 2**53 - 1) intVal = 2**53 - 1;
         if (intVal < -(2**53-1)) intVal = -(2**53-1);
-        
-        let hexStr = intVal.toString(16).toUpperCase();
-        let binStr = intVal.toString(2);
-        let decStr = intVal.toString();
-        let octStr = intVal.toString(8);
-        
-        infoDiv.innerHTML = `
-            <div class="programmer-panel">
-                <div class="bit-indicator">🔢 DEC: ${decStr}</div>
-                <div class="bit-indicator">🔷 HEX: 0x${hexStr}</div>
-                <div class="bit-indicator">🔸 OCT: 0o${octStr}</div>
-                <div class="bit-indicator">📀 BIN: ${binStr}</div>
-            </div>
-        `;
+        infoDiv.innerHTML = `<div class="programmer-panel">
+            <div class="bit-indicator">🔢 DEC: ${intVal}</div>
+            <div class="bit-indicator">🔷 HEX: 0x${intVal.toString(16).toUpperCase()}</div>
+            <div class="bit-indicator">🔸 OCT: 0o${intVal.toString(8)}</div>
+            <div class="bit-indicator">📀 BIN: ${intVal.toString(2)}</div>
+        </div>`;
     }
     
-    function addToHistory(expression, result) {
-        if (!expression || expression === "0" || expression === "Fehler") return;
-        if (result === "" || result === undefined) return;
-        history.unshift({ expression: expression, result: result });
+    function addToHistory(expr, res) {
+        if (!expr || expr === "0" || expr === "Fehler") return;
+        if (res === "" || res === undefined) return;
+        history.unshift({ expression: expr, result: res });
         if (history.length > 30) history.pop();
         updateHistoryDisplay();
     }
@@ -445,24 +384,16 @@
     function updateHistoryDisplay() {
         const historyList = document.getElementById('historyList');
         if (!historyList) return;
-        
         if (history.length === 0) {
             historyList.innerHTML = '<div style="text-align:center; color:#6a7e8e; padding:20px;">Kein Verlauf vorhanden</div>';
             return;
         }
-        
-        historyList.innerHTML = history.map((item, index) => `
-            <div class="history-item" data-index="${index}">
-                <span class="history-expr">${item.expression}</span>
-                <span class="history-val">= ${item.result}</span>
-            </div>
-        `).join('');
-        
+        historyList.innerHTML = history.map((item, index) => `<div class="history-item" data-index="${index}"><span class="history-expr">${item.expression}</span><span class="history-val">= ${item.result}</span></div>`).join('');
         document.querySelectorAll('.history-item').forEach(el => {
-            el.addEventListener('click', (e) => {
-                const index = parseInt(el.getAttribute('data-index'));
-                if (!isNaN(index) && history[index]) {
-                    currentInput = history[index].result;
+            el.addEventListener('click', () => {
+                const idx = parseInt(el.getAttribute('data-index'));
+                if (!isNaN(idx) && history[idx]) {
+                    currentInput = history[idx].result;
                     justCalculated = true;
                     updateDisplay();
                 }
@@ -470,10 +401,7 @@
         });
     }
     
-    function clearHistory() {
-        history = [];
-        updateHistoryDisplay();
-    }
+    function clearHistory() { history = []; updateHistoryDisplay(); }
     
     function isOperatorEnd(expr) {
         if (!expr) return false;
@@ -481,28 +409,14 @@
         return ["+", "-", "*", "/", "%", "^", "&", "|", "~", "("].includes(last);
     }
     
-    // Haupteingabe
     function handleInput(value) {
-        // Spezialbefehle
-        if (value === "AC") {
-            currentInput = "0";
-            justCalculated = false;
-            updateDisplay();
-            return;
-        }
-        if (value === "C" || value === "CE") {
-            currentInput = "0";
-            justCalculated = false;
-            updateDisplay();
-            return;
-        }
+        if (value === "AC") { currentInput = "0"; justCalculated = false; updateDisplay(); return; }
+        if (value === "C" || value === "CE") { currentInput = "0"; justCalculated = false; updateDisplay(); return; }
         if (value === "=") {
             let evaluated = tryEvaluate(currentInput);
             if (evaluated !== null && !isNaN(evaluated) && isFinite(evaluated)) {
                 let resultStr = formatResult(evaluated);
-                if (currentInput !== resultStr && currentInput !== "0" && currentInput !== "") {
-                    addToHistory(currentInput, resultStr);
-                }
+                if (currentInput !== resultStr && currentInput !== "0" && currentInput !== "") addToHistory(currentInput, resultStr);
                 currentInput = resultStr;
                 justCalculated = true;
             }
@@ -512,56 +426,24 @@
         if (value === "+/-") {
             if (justCalculated) {
                 let num = parseFloat(currentInput);
-                if (!isNaN(num)) {
-                    currentInput = (-num).toString();
-                    justCalculated = false;
-                }
+                if (!isNaN(num)) { currentInput = (-num).toString(); justCalculated = false; }
             } else {
                 let num = tryEvaluate(currentInput);
-                if (num !== null && !isNaN(num)) {
-                    currentInput = (-num).toString();
-                }
+                if (num !== null && !isNaN(num)) currentInput = (-num).toString();
             }
             updateDisplay();
             return;
         }
         if (value === "%") {
             let num = tryEvaluate(currentInput);
-            if (num !== null && !isNaN(num)) {
-                currentInput = (num / 100).toString();
-                justCalculated = false;
-                updateDisplay();
-            }
+            if (num !== null && !isNaN(num)) { currentInput = (num / 100).toString(); justCalculated = false; updateDisplay(); }
             return;
         }
-        
-        // Speicherfunktionen
-        if (value === "M+") {
-            let val = tryEvaluate(currentInput);
-            if (val !== null && !isNaN(val)) memoryValue += val;
-            updateDisplay();
-            return;
-        }
-        if (value === "M-") {
-            let val = tryEvaluate(currentInput);
-            if (val !== null && !isNaN(val)) memoryValue -= val;
-            updateDisplay();
-            return;
-        }
-        if (value === "MR") {
-            currentInput = memoryValue.toString();
-            justCalculated = true;
-            updateDisplay();
-            return;
-        }
-        if (value === "MC") {
-            memoryValue = 0;
-            updateDisplay();
-            return;
-        }
-        
-        // Wissenschaftliche Funktionen
-        if (["sin", "cos", "tan", "asin", "acos", "atan", "sqrt", "ln", "log", "x²"].includes(value)) {
+        if (value === "M+") { let v = tryEvaluate(currentInput); if (v !== null && !isNaN(v)) memoryValue += v; updateDisplay(); return; }
+        if (value === "M-") { let v = tryEvaluate(currentInput); if (v !== null && !isNaN(v)) memoryValue -= v; updateDisplay(); return; }
+        if (value === "MR") { currentInput = memoryValue.toString(); justCalculated = true; updateDisplay(); return; }
+        if (value === "MC") { memoryValue = 0; updateDisplay(); return; }
+        if (["sin","cos","tan","asin","acos","atan","sqrt","ln","log","x²"].includes(value)) {
             let num = tryEvaluate(currentInput);
             if (num !== null && !isNaN(num)) {
                 let res;
@@ -581,80 +463,46 @@
             }
             return;
         }
-        
-        // 1/x
         if (value === "1/x") {
             let num = tryEvaluate(currentInput);
-            if (num !== null && !isNaN(num) && num !== 0) {
-                currentInput = (1 / num).toString();
-                justCalculated = true;
-                updateDisplay();
-            }
+            if (num !== null && !isNaN(num) && num !== 0) { currentInput = (1 / num).toString(); justCalculated = true; updateDisplay(); }
             return;
         }
-        
-        // Konstanten
+        if (value === "√") {
+            let num = tryEvaluate(currentInput);
+            if (num !== null && !isNaN(num) && num >= 0) { currentInput = Math.sqrt(num).toString(); justCalculated = true; updateDisplay(); }
+            return;
+        }
         if (value === "π") {
-            if (justCalculated || currentInput === "0" || currentInput === "Fehler") {
-                currentInput = "π";
-                justCalculated = false;
-            } else {
-                currentInput += "π";
-            }
+            if (justCalculated || currentInput === "0" || currentInput === "Fehler") { currentInput = "π"; justCalculated = false; }
+            else currentInput += "π";
             updateDisplay();
             return;
         }
         if (value === "e") {
-            if (justCalculated || currentInput === "0" || currentInput === "Fehler") {
-                currentInput = "e";
-                justCalculated = false;
-            } else {
-                currentInput += "e";
-            }
+            if (justCalculated || currentInput === "0" || currentInput === "Fehler") { currentInput = "e"; justCalculated = false; }
+            else currentInput += "e";
             updateDisplay();
             return;
         }
-        
-        // Potenz
         if (value === "xʸ") {
-            if (justCalculated) {
-                currentInput = currentInput + "^";
-                justCalculated = false;
-            } else if (!isOperatorEnd(currentInput) && currentInput !== "") {
-                currentInput += "^";
-            } else if (currentInput === "0") {
-                currentInput = "0^";
-            }
+            if (justCalculated) { currentInput = currentInput + "^"; justCalculated = false; }
+            else if (!isOperatorEnd(currentInput) && currentInput !== "") currentInput += "^";
+            else if (currentInput === "0") currentInput = "0^";
             updateDisplay();
             return;
         }
-        
-        // Klammern
         if (value === "(") {
-            if (justCalculated || currentInput === "0" || currentInput === "Fehler") {
-                currentInput = "(";
-                justCalculated = false;
-            } else {
-                currentInput += "(";
-            }
+            if (justCalculated || currentInput === "0" || currentInput === "Fehler") { currentInput = "("; justCalculated = false; }
+            else currentInput += "(";
             updateDisplay();
             return;
         }
-        if (value === ")") {
-            currentInput += ")";
-            justCalculated = false;
-            updateDisplay();
-            return;
-        }
-        
-        // Ziffern und Punkt
+        if (value === ")") { currentInput += ")"; justCalculated = false; updateDisplay(); return; }
         if (/^[\d.]$/.test(value)) {
-            if (justCalculated) {
-                currentInput = value;
-                justCalculated = false;
-            } else if (currentInput === "0" || currentInput === "Fehler") {
-                currentInput = value;
-            } else {
+            if (justCalculated) { currentInput = value; justCalculated = false; }
+            else if (currentInput === "0" || currentInput === "Fehler") currentInput = value;
+            else {
                 if (value === ".") {
                     let lastNumber = currentInput.split(/[\+\-\*\/%\(\)\^\&\|\~\[\]\<\>]/).pop();
                     if (lastNumber && lastNumber.includes(".")) return;
@@ -664,164 +512,109 @@
             updateDisplay();
             return;
         }
-        
-        // Operatoren
-        if (["+", "-", "*", "/", "%", "^", "&", "|", "<<", ">>", "~"].includes(value)) {
-            if (justCalculated) {
-                justCalculated = false;
-                currentInput = currentInput + value;
-            } else if ((currentInput === "0" || currentInput === "") && value === "-") {
-                currentInput = "-";
-            } else if (isOperatorEnd(currentInput)) {
-                currentInput = currentInput.slice(0, -1) + value;
-            } else {
-                currentInput += value;
-            }
+        if (["+", "-", "*", "/", "^", "&", "|", "<<", ">>", "~"].includes(value)) {
+            if (justCalculated) { justCalculated = false; currentInput = currentInput + value; }
+            else if ((currentInput === "0" || currentInput === "") && value === "-") currentInput = "-";
+            else if (isOperatorEnd(currentInput)) currentInput = currentInput.slice(0, -1) + value;
+            else currentInput += value;
             updateDisplay();
             return;
         }
-        
-        // Hexadezimale Buchstaben für Programmierer
-        if (currentMode === "programmer" && /^[A-F]$/i.test(value)) {
-            if (justCalculated) {
-                currentInput = value.toUpperCase();
-                justCalculated = false;
-            } else if (currentInput === "0" || currentInput === "Fehler") {
-                currentInput = value.toUpperCase();
-            } else {
-                currentInput += value.toUpperCase();
-            }
+        if (value === "Mod" || value === "%") {
+            if (justCalculated) { currentInput = currentInput + "%"; justCalculated = false; }
+            else if (!isOperatorEnd(currentInput) && currentInput !== "") currentInput += "%";
+            else if (currentInput === "0") currentInput = "0%";
             updateDisplay();
             return;
         }
-        
-        // Modulo
-        if (value === "Mod") {
-            if (justCalculated) {
-                currentInput = currentInput + "%";
-                justCalculated = false;
-            } else if (!isOperatorEnd(currentInput) && currentInput !== "") {
-                currentInput += "%";
-            } else if (currentInput === "0") {
-                currentInput = "0%";
-            }
-            updateDisplay();
-            return;
-        }
-        
-        // Bitweise Operatoren
         if (value === "AND") {
-            if (justCalculated) {
-                currentInput = currentInput + "&";
-                justCalculated = false;
-            } else if (!isOperatorEnd(currentInput) && currentInput !== "") {
-                currentInput += "&";
-            }
+            if (justCalculated) { currentInput = currentInput + "&"; justCalculated = false; }
+            else if (!isOperatorEnd(currentInput) && currentInput !== "") currentInput += "&";
             updateDisplay();
             return;
         }
         if (value === "OR") {
-            if (justCalculated) {
-                currentInput = currentInput + "|";
-                justCalculated = false;
-            } else if (!isOperatorEnd(currentInput) && currentInput !== "") {
-                currentInput += "|";
-            }
+            if (justCalculated) { currentInput = currentInput + "|"; justCalculated = false; }
+            else if (!isOperatorEnd(currentInput) && currentInput !== "") currentInput += "|";
             updateDisplay();
             return;
         }
         if (value === "XOR") {
-            if (justCalculated) {
-                currentInput = currentInput + "^";
-                justCalculated = false;
-            } else if (!isOperatorEnd(currentInput) && currentInput !== "") {
-                currentInput += "^";
-            }
+            if (justCalculated) { currentInput = currentInput + "^"; justCalculated = false; }
+            else if (!isOperatorEnd(currentInput) && currentInput !== "") currentInput += "^";
             updateDisplay();
             return;
         }
         if (value === "NOT") {
-            if (justCalculated) {
-                currentInput = "~" + currentInput;
-                justCalculated = false;
-            } else if (!isOperatorEnd(currentInput) && currentInput !== "") {
-                currentInput += "~";
-            } else if (currentInput === "0") {
-                currentInput = "~";
-            }
+            if (justCalculated) { currentInput = "~" + currentInput; justCalculated = false; }
+            else if (!isOperatorEnd(currentInput) && currentInput !== "") currentInput += "~";
+            else if (currentInput === "0") currentInput = "~";
+            updateDisplay();
+            return;
+        }
+        if (currentMode === "programmer" && /^[A-F]$/i.test(value)) {
+            if (justCalculated) { currentInput = value.toUpperCase(); justCalculated = false; }
+            else if (currentInput === "0" || currentInput === "Fehler") currentInput = value.toUpperCase();
+            else currentInput += value.toUpperCase();
             updateDisplay();
             return;
         }
     }
     
-    // Button-Layouts
     function renderButtons() {
         const container = document.getElementById('buttonPanel');
         if (!container) return;
         container.className = "buttons";
-        
         let buttons = [];
-        
         if (currentMode === "standard") {
             buttons = [
-                ["MC", "M+", "M-", "MR", "C"],
-                ["%", "CE", "C", "/", "x²"],
-                ["7", "8", "9", "*", "√"],
-                ["4", "5", "6", "-", "1/x"],
-                ["1", "2", "3", "+", "="],
-                ["0", ".", "+/-", "(", ")"]
+                ["MC","M+","M-","MR","C"],
+                ["%","CE","√","/","x²"],
+                ["7","8","9","*","1/x"],
+                ["4","5","6","-","="],
+                ["1","2","3","+","AC"],
+                ["0",".","+/-","(",")"]
             ];
-            container.classList.remove("scientific-grid", "programmer-grid");
-        } 
-        else if (currentMode === "scientific") {
+            container.classList.remove("scientific-grid","programmer-grid");
+        } else if (currentMode === "scientific") {
             buttons = [
-                ["MC", "M+", "M-", "MR", "C"],
-                ["sin", "cos", "tan", "π", "e"],
-                ["asin", "acos", "atan", "ln", "log"],
-                ["x²", "xʸ", "sqrt", "(", ")"],
-                ["7", "8", "9", "/", "%"],
-                ["4", "5", "6", "*", "1/x"],
-                ["1", "2", "3", "-", "="],
-                ["0", ".", "+/-", "+", "CE"]
+                ["MC","M+","M-","MR","C"],
+                ["sin","cos","tan","π","e"],
+                ["asin","acos","atan","ln","log"],
+                ["x²","xʸ","sqrt","(",")"],
+                ["7","8","9","/","%"],
+                ["4","5","6","*","1/x"],
+                ["1","2","3","-","="],
+                ["0",".","+/-","+","AC"]
             ];
             container.classList.add("scientific-grid");
             container.classList.remove("programmer-grid");
-        } 
-        else if (currentMode === "programmer") {
+        } else {
             buttons = [
-                ["MC", "M+", "M-", "MR", "C"],
-                ["A", "B", "C", "D", "E"],
-                ["F", "7", "8", "9", "Mod"],
-                ["4", "5", "6", "AND", "OR"],
-                ["1", "2", "3", "XOR", "NOT"],
-                ["0", ".", "+/-", "<<", ">>"],
-                ["(", ")", "+", "-", "*"],
-                ["/", "%", "=", "CE", "AC"]
+                ["MC","M+","M-","MR","C"],
+                ["A","B","C","D","E"],
+                ["F","7","8","9","Mod"],
+                ["4","5","6","AND","OR"],
+                ["1","2","3","XOR","NOT"],
+                ["0",".","+/-","<<",">>"],
+                ["(",")","+","-","*"],
+                ["/","=","AC","CE","x²"]
             ];
             container.classList.add("programmer-grid");
             container.classList.remove("scientific-grid");
         }
-        
         container.innerHTML = "";
         for (let row of buttons) {
-            for (let btnLabel of row) {
+            for (let label of row) {
                 const btn = document.createElement("button");
-                btn.innerText = btnLabel;
-                
-                if (btnLabel === "=") btn.classList.add("btn-equal");
-                else if (["+", "-", "*", "/", "%", "^", "&", "|", ">>", "<<", "~", "AND", "OR", "XOR", "NOT", "Mod"].includes(btnLabel)) 
-                    btn.classList.add("btn-op");
-                else if (btnLabel === "C" || btnLabel === "CE" || btnLabel === "AC") btn.classList.add("btn-clear");
-                else if (["sin","cos","tan","asin","acos","atan","ln","log","sqrt","x²","xʸ","π","e","1/x","√"].includes(btnLabel)) 
-                    btn.classList.add("btn-func");
-                else if (btnLabel === "MC" || btnLabel === "M+" || btnLabel === "M-" || btnLabel === "MR") 
-                    btn.classList.add("btn-mem");
-                else if (["A","B","C","D","E","F","AND","OR","XOR","NOT","Mod","<<",">>"].includes(btnLabel))
-                    btn.classList.add("btn-bit");
-                
-                btn.addEventListener("click", (function(label) {
-                    return function() { handleInput(label); };
-                })(btnLabel));
+                btn.innerText = label;
+                if (label === "=") btn.classList.add("btn-equal");
+                else if (["+","-","*","/","%","^","&","|",">>","<<","~","AND","OR","XOR","NOT","Mod"].includes(label)) btn.classList.add("btn-op");
+                else if (label === "C" || label === "CE" || label === "AC") btn.classList.add("btn-clear");
+                else if (["sin","cos","tan","asin","acos","atan","ln","log","sqrt","x²","xʸ","π","e","1/x","√"].includes(label)) btn.classList.add("btn-func");
+                else if (label === "MC" || label === "M+" || label === "M-" || label === "MR") btn.classList.add("btn-mem");
+                else if (["A","B","C","D","E","F","AND","OR","XOR","NOT","Mod","<<",">>"].includes(label)) btn.classList.add("btn-bit");
+                btn.addEventListener("click", () => handleInput(label));
                 container.appendChild(btn);
             }
         }
@@ -833,57 +626,15 @@
         justCalculated = false;
         renderButtons();
         updateDisplay();
-        
-        // Aktiviere den richtigen Tab
         document.querySelectorAll('.mode-btn').forEach(btn => {
-            if (btn.getAttribute('data-mode') === mode) {
-                btn.classList.add('active');
-            } else {
-                btn.classList.remove('active');
-            }
+            if (btn.getAttribute('data-mode') === mode) btn.classList.add('active');
+            else btn.classList.remove('active');
         });
     }
     
-    // Tastaturunterstützung
-    function handleKeyboard(e) {
-        const key = e.key;
-        
-        if (key === 'Enter') {
-            e.preventDefault();
-            handleInput('=');
-        } else if (key === 'Escape') {
-            handleInput('AC');
-        } else if (key === 'Backspace') {
-            e.preventDefault();
-            if (justCalculated) {
-                currentInput = "0";
-                justCalculated = false;
-            } else if (currentInput.length > 1 && currentInput !== "Fehler") {
-                currentInput = currentInput.slice(0, -1);
-                if (currentInput === "") currentInput = "0";
-            } else {
-                currentInput = "0";
-            }
-            updateDisplay();
-        } else if (/^[0-9.]$/.test(key)) {
-            e.preventDefault();
-            handleInput(key);
-        } else if (['+', '-', '*', '/', '%', '(', ')'].includes(key)) {
-            e.preventDefault();
-            handleInput(key);
-        }
-    }
-    
-    // Event-Listener für Modus-Wechsel
     document.querySelectorAll('.mode-btn').forEach(btn => {
-        btn.addEventListener('click', function(e) {
-            e.preventDefault();
-            const mode = this.getAttribute('data-mode');
-            setMode(mode);
-        });
+        btn.addEventListener('click', () => setMode(btn.getAttribute('data-mode')));
     });
-    
-    // History Toggle
     document.getElementById('historyToggleBtn').addEventListener('click', () => {
         const panel = document.getElementById('historyPanel');
         const btn = document.getElementById('historyToggleBtn');
@@ -896,14 +647,13 @@
             updateHistoryDisplay();
         }
     });
+    document.getElementById('clearHistoryBtn').addEventListener('click', clearHistory);
     
-    document.getElementById('clearHistoryBtn').addEventListener('click', () => {
-        clearHistory();
-    });
+    // Service Worker registrieren
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('sw.js').then(reg => console.log('SW registriert', reg)).catch(err => console.log('SW Fehler', err));
+    }
     
-    document.addEventListener('keydown', handleKeyboard);
-    
-    // Initialisierung
     setMode("standard");
     updateHistoryDisplay();
 </script>
